@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import "./TechGlobe.css";
+import usePerformanceMode from "../../hooks/usePerformanceMode";
 
 const TAU = Math.PI * 2;
 
@@ -71,8 +72,13 @@ const TechGlobe = ({ className, enablePointer = true }) => {
   const containerRef = useRef(null);
   const animationRef = useRef(null);
   const materialsRef = useRef([]);
+  const performanceMode = usePerformanceMode();
 
   useEffect(() => {
+    if (performanceMode) {
+      return undefined;
+    }
+
     const container = containerRef.current;
     if (!container) return undefined;
 
@@ -86,9 +92,9 @@ const TechGlobe = ({ className, enablePointer = true }) => {
     camera.position.set(0, 0, 7);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio ?? 1, 1.75));
     renderer.setSize(width, height);
-    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.domElement.classList.add("tech-globe-canvas");
     container.appendChild(renderer.domElement);
 
@@ -109,7 +115,7 @@ const TechGlobe = ({ className, enablePointer = true }) => {
     const globeGroup = new THREE.Group();
     group.add(globeGroup);
 
-    const globeGeometry = new THREE.SphereGeometry(2.2, 80, 80);
+    const globeGeometry = new THREE.SphereGeometry(2.2, 48, 48);
     const globeMaterial = new THREE.MeshStandardMaterial({
       color: "#06060C",
       emissive: "#082F40",
@@ -121,7 +127,7 @@ const TechGlobe = ({ className, enablePointer = true }) => {
     globeGroup.add(globe);
 
     const wireframeGeometry = new THREE.WireframeGeometry(
-      new THREE.SphereGeometry(2.24, 40, 40),
+      new THREE.SphereGeometry(2.24, 28, 28),
     );
     const wireframeMaterial = new THREE.LineBasicMaterial({
       color: "#00FFFF",
@@ -131,7 +137,7 @@ const TechGlobe = ({ className, enablePointer = true }) => {
     const wireframe = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
     globeGroup.add(wireframe);
 
-    const glowGeometry = new THREE.SphereGeometry(2.35, 64, 64);
+    const glowGeometry = new THREE.SphereGeometry(2.35, 40, 40);
     const glowMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uGlowColor: { value: new THREE.Color("#00FFFF") },
@@ -161,7 +167,7 @@ const TechGlobe = ({ className, enablePointer = true }) => {
 
     const flowMaterial = createFlowMaterial();
     const flowRing = new THREE.Mesh(
-      new THREE.TorusGeometry(2.4, 0.08, 48, 128),
+      new THREE.TorusGeometry(2.4, 0.06, 32, 92),
       flowMaterial,
     );
     flowRing.rotation.x = Math.PI / 2.4;
@@ -170,7 +176,7 @@ const TechGlobe = ({ className, enablePointer = true }) => {
 
     const pulseMaterial = createPulseMaterial();
     const pulseDisc = new THREE.Mesh(
-      new THREE.CircleGeometry(1.6, 64),
+      new THREE.CircleGeometry(1.6, 48),
       pulseMaterial,
     );
     pulseDisc.rotation.x = Math.PI / 2;
@@ -205,7 +211,7 @@ const TechGlobe = ({ className, enablePointer = true }) => {
         }
       `,
     });
-    const halo = new THREE.Mesh(new THREE.SphereGeometry(2.6, 60, 60), haloMaterial);
+    const halo = new THREE.Mesh(new THREE.SphereGeometry(2.6, 42, 42), haloMaterial);
     globeGroup.add(halo);
     materialsRef.current.push(haloMaterial);
 
@@ -214,7 +220,7 @@ const TechGlobe = ({ className, enablePointer = true }) => {
     const colors = [];
     const color = new THREE.Color();
 
-    for (let i = 0; i < 420; i++) {
+    for (let i = 0; i < 240; i++) {
       const theta = Math.random() * Math.PI;
       const phi = Math.random() * TAU;
       const radius = 2.25;
@@ -292,7 +298,7 @@ const TechGlobe = ({ className, enablePointer = true }) => {
     };
 
     const samplePositions = pointsGeometry.attributes.position.array;
-    for (let i = 0; i < 180; i += 15) {
+    for (let i = 0; i < 120; i += 12) {
       const start = new THREE.Vector3(
         samplePositions[i],
         samplePositions[i + 1],
@@ -348,8 +354,8 @@ const TechGlobe = ({ className, enablePointer = true }) => {
       });
 
       trailsGroup.children.forEach((trail) => {
-        const progress = (trail.userData.progress += 0.015);
-        const intensity = 0.15 + 0.25 * (Math.sin(progress) * 0.5 + 0.5);
+        const progress = (trail.userData.progress += 0.012);
+        const intensity = 0.12 + 0.22 * (Math.sin(progress) * 0.5 + 0.5);
         trail.material.opacity = intensity;
       });
 
@@ -377,7 +383,9 @@ const TechGlobe = ({ className, enablePointer = true }) => {
       if (enablePointer) {
         window.removeEventListener("pointermove", handlePointerMove);
       }
-      container.removeChild(renderer.domElement);
+      if (renderer.domElement.parentElement === container) {
+        container.removeChild(renderer.domElement);
+      }
       renderer.dispose();
       scene.traverse((object) => {
         if (object.geometry) object.geometry.dispose();
@@ -390,7 +398,27 @@ const TechGlobe = ({ className, enablePointer = true }) => {
         }
       });
     };
-  }, [enablePointer]);
+  }, [enablePointer, performanceMode]);
+
+  if (performanceMode) {
+    return (
+      <div
+        ref={containerRef}
+        className={className ? `tech-globe ${className}` : "tech-globe"}
+      >
+        <div className="flex h-full w-full flex-col items-center justify-center gap-4 px-6 py-16 text-center">
+          <div className="h-16 w-16 rounded-full border border-cyan-400/40 bg-cyan-400/10" />
+          <h3 className="text-lg font-semibold text-cyan-100">
+            Intelligent Operations Overview
+          </h3>
+          <p className="text-sm text-slate-300/80">
+            Interactive 3D visuals are paused on this device to keep things fast and
+            responsive. You still get the same insights without the extra motion.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

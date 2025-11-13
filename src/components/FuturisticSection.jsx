@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
+import usePerformanceMode from "../hooks/usePerformanceMode";
 
 const palette = {
   cyan: {
@@ -29,21 +30,25 @@ const FuturisticSection = ({
   containerClassName = "mx-auto flex max-w-7xl flex-col gap-14 px-6 md:px-10",
   accent = "cyan",
   innerRef = null,
+  fullWidth = false,
 }) => {
   const colors = palette[accent] ?? palette.cyan;
+  const performanceMode = usePerformanceMode();
 
-  const particles = useMemo(
-    () =>
-      Array.from({ length: 42 }, (_, index) => ({
-        id: `${id || "section"}-particle-${index}`,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        delay: Math.random() * 6,
-        duration: 8 + Math.random() * 6,
-        size: 1 + Math.random() * 2.5,
-      })),
-    [id],
-  );
+  const particles = useMemo(() => {
+    if (performanceMode) {
+      return [];
+    }
+
+    return Array.from({ length: 18 }, (_, index) => ({
+      id: `${id || "section"}-particle-${index}`,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      delay: Math.random() * 4,
+      duration: 7 + Math.random() * 4,
+      size: 1 + Math.random() * 2,
+    }));
+  }, [id, performanceMode]);
 
   return (
     <section
@@ -63,14 +68,14 @@ const FuturisticSection = ({
         <motion.div
           className="absolute inset-0"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.4 }}
+          animate={{ opacity: performanceMode ? 0.18 : 0.4 }}
           transition={{ duration: 1.4 }}
           style={{
             backgroundImage: `
               linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
               linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
             `,
-            backgroundSize: "70px 70px",
+            backgroundSize: performanceMode ? "90px 90px" : "70px 70px",
             maskImage:
               "radial-gradient(circle at center, rgba(0,0,0,1), rgba(0,0,0,0.3))",
           }}
@@ -82,63 +87,69 @@ const FuturisticSection = ({
               radial-gradient(circle at 75% 35%, ${colors.glowB}, transparent 58%)`,
           }}
         />
-        <motion.div
-          className="absolute inset-x-10 top-0 h-px"
-          initial={{ scaleX: 0, opacity: 0 }}
-          whileInView={{ scaleX: 1, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2 }}
-          style={{
-            background: `linear-gradient(90deg, transparent, ${colors.accent}, transparent)`,
-          }}
-        />
-        <motion.div
-          className="absolute inset-x-10 bottom-0 h-px"
-          initial={{ scaleX: 0, opacity: 0 }}
-          whileInView={{ scaleX: 1, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, delay: 0.2 }}
-          style={{
-            background: `linear-gradient(90deg, transparent, ${colors.accent}, transparent)`,
-          }}
-        />
+        {!performanceMode && (
+          <>
+            <motion.div
+              className="absolute inset-x-10 top-0 h-px"
+              initial={{ scaleX: 0, opacity: 0 }}
+              whileInView={{ scaleX: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2 }}
+              style={{
+                background: `linear-gradient(90deg, transparent, ${colors.accent}, transparent)`,
+              }}
+            />
+            <motion.div
+              className="absolute inset-x-10 bottom-0 h-px"
+              initial={{ scaleX: 0, opacity: 0 }}
+              whileInView={{ scaleX: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, delay: 0.2 }}
+              style={{
+                background: `linear-gradient(90deg, transparent, ${colors.accent}, transparent)`,
+              }}
+            />
+          </>
+        )}
       </div>
 
-      <motion.div
-        className="pointer-events-none absolute inset-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.8 }}
-        transition={{ duration: 1.2 }}
-      >
-        {particles.map((particle) => (
-          <motion.span
-            key={particle.id}
-            className="absolute h-[2px] w-[2px] rounded-full bg-cyan-200/70 shadow-[0_0_14px_rgba(34,211,238,0.7)]"
-            initial={{ opacity: 0 }}
-            animate={{
-              opacity: [0, 1, 0],
-              y: ["0%", "-20%", "0%"],
-              x: ["0%", "12%", "-8%", "0%"],
-            }}
-            transition={{
-              duration: particle.duration,
-              delay: particle.delay,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              width: particle.size,
-              height: particle.size,
-            }}
-          />
-        ))}
-      </motion.div>
+      {particles.length > 0 && (
+        <motion.div
+          className="pointer-events-none absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.7 }}
+          transition={{ duration: 1.2 }}
+        >
+          {particles.map((particle) => (
+            <motion.span
+              key={particle.id}
+              className="absolute h-[2px] w-[2px] rounded-full bg-cyan-200/70 shadow-[0_0_14px_rgba(34,211,238,0.7)]"
+              initial={{ opacity: 0 }}
+              animate={{
+                opacity: [0, 1, 0],
+                y: ["0%", "-16%", "0%"],
+                x: ["0%", "8%", "-6%", "0%"],
+              }}
+              transition={{
+                duration: particle.duration,
+                delay: particle.delay,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              style={{
+                left: `${particle.x}%`,
+                top: `${particle.y}%`,
+                width: particle.size,
+                height: particle.size,
+              }}
+            />
+          ))}
+        </motion.div>
+      )}
 
       <div
         className={`relative z-10 ${containerClassName}`}
-        style={{ maxWidth: "min(1280px, 94vw)" }}
+        style={fullWidth ? { width: "100%" } : { maxWidth: "min(1280px, 94vw)" }}
       >
         {children}
       </div>

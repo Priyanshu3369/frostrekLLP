@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
 import {
   Sparkles,
   Play,
@@ -8,6 +9,7 @@ import {
   LineChart,
 } from "lucide-react";
 import TechGlobe from "../components/TechGlobe/TechGlobe";
+import usePerformanceMode from "../hooks/usePerformanceMode";
 
 const stats = [
   { label: "Enterprise Deployments", value: "120+", trend: "+32%" },
@@ -58,6 +60,50 @@ const floatingBeacons = [
 ];
 
 const Hero = () => {
+  const performanceMode = usePerformanceMode();
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleChange = () => setIsSmallScreen(mediaQuery.matches);
+
+    handleChange();
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", handleChange);
+    } else {
+      mediaQuery.addListener(handleChange);
+    }
+
+    return () => {
+      if (typeof mediaQuery.removeEventListener === "function") {
+        mediaQuery.removeEventListener("change", handleChange);
+      } else {
+        mediaQuery.removeListener(handleChange);
+      }
+    };
+  }, []);
+
+  const ambientParticles = useMemo(() => {
+    const count = performanceMode ? 8 : isSmallScreen ? 12 : 18;
+
+    if (count <= 0) {
+      return [];
+    }
+
+    return Array.from({ length: count }, (_, index) => ({
+      id: `hero-particle-${index}`,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      duration: 6 + Math.random() * 3,
+      delay: Math.random() * 2,
+      offset: Math.random() * 14,
+    }));
+  }, [isSmallScreen, performanceMode]);
+
   return (
     <section
       id="home"
@@ -70,37 +116,32 @@ const Hero = () => {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(26,187,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(125,95,255,0.08)_1px,transparent_1px)] bg-[size:80px_80px]" />
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="absolute inset-0 pointer-events-none"
-      >
-        {[...Array(50)].map((_, index) => (
-          <motion.span
-            key={index}
-            className="absolute block h-[2px] w-[2px] rounded-full bg-cyan-300/60 shadow-[0_0_12px_rgba(34,211,238,0.8)]"
-            initial={{
-              x: Math.random() * 100,
-              y: Math.random() * 100,
-              opacity: 0,
-            }}
-            animate={{
-              opacity: [0, 1, 0],
-              y: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
-            }}
-            transition={{
-              duration: 6 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
-      </motion.div>
+      {ambientParticles.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="absolute inset-0 pointer-events-none"
+        >
+          {ambientParticles.map((particle) => (
+            <motion.span
+              key={particle.id}
+              className="absolute block h-[2px] w-[2px] rounded-full bg-cyan-300/60 shadow-[0_0_12px_rgba(34,211,238,0.8)]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0], y: ["0%", "-10%", "0%"] }}
+              transition={{
+                duration: particle.duration,
+                repeat: Infinity,
+                delay: particle.delay,
+              }}
+              style={{
+                left: `${particle.left}%`,
+                top: `${particle.top}%`,
+              }}
+            />
+          ))}
+        </motion.div>
+      )}
 
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-16 px-6 md:px-10 lg:flex-row lg:gap-20">
         <motion.div
@@ -187,47 +228,49 @@ const Hero = () => {
 
         <motion.div
           className="relative flex flex-1 flex-col justify-center"
-          initial={{ opacity: 0, scale: 0.92 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.25, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ delay: 0.25, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="absolute -left-24 top-1/4 hidden h-32 w-32 rounded-full bg-cyan-400/20 blur-3xl lg:block" />
           <div className="absolute -right-32 bottom-16 hidden h-40 w-40 rounded-full bg-indigo-500/20 blur-3xl lg:block" />
 
           <div className="relative">
-            <TechGlobe />
+            <TechGlobe enablePointer={!performanceMode} />
 
             <div className="tech-globe-overlay pointer-events-none">
               <div className="tech-globe-grid" />
             </div>
 
-            <motion.div
-              className="pointer-events-none absolute inset-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.8 }}
-              transition={{ delay: 0.3, duration: 1 }}
-            >
-              {floatingBeacons.map((beacon) => (
-                <motion.div
-                  key={beacon.title}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.9 + beacon.delay, duration: 0.6 }}
-                  className={`absolute ${beacon.position} w-48 rounded-2xl border border-cyan-400/20 bg-[#06060C]/80 p-4 text-xs text-slate-200 shadow-[0_18px_32px_rgba(8,47,73,0.35)] backdrop-blur-lg`}
-                >
-                  <div className="text-sm font-semibold text-cyan-200">
-                    {beacon.title}
-                  </div>
-                  <div className="mt-1 text-[11px] uppercase tracking-[0.2em] text-slate-400">
-                    {beacon.subtitle}
-                  </div>
-                  <div className="mt-3 flex items-center gap-2 text-[11px] text-slate-400/70">
-                    <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(74,222,128,0.6)]" />
-                    Systems Nominal
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+            {!performanceMode && (
+              <motion.div
+                className="pointer-events-none absolute inset-0"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.8 }}
+                transition={{ delay: 0.3, duration: 1 }}
+              >
+                {floatingBeacons.map((beacon) => (
+                  <motion.div
+                    key={beacon.title}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.9 + beacon.delay, duration: 0.6 }}
+                    className={`absolute ${beacon.position} w-48 rounded-2xl border border-cyan-400/20 bg-[#06060C]/80 p-4 text-xs text-slate-200 shadow-[0_18px_32px_rgba(8,47,73,0.35)] backdrop-blur-lg`}
+                  >
+                    <div className="text-sm font-semibold text-cyan-200">
+                      {beacon.title}
+                    </div>
+                    <div className="mt-1 text-[11px] uppercase tracking-[0.2em] text-slate-400">
+                      {beacon.subtitle}
+                    </div>
+                    <div className="mt-3 flex items-center gap-2 text-[11px] text-slate-400/70">
+                      <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(74,222,128,0.6)]" />
+                      Systems Nominal
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
           </div>
         </motion.div>
       </div>
@@ -236,7 +279,7 @@ const Hero = () => {
         className="relative z-10 mx-auto mt-24 max-w-6xl px-6 md:px-10"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ delay: 0.9, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="grid gap-6 rounded-[28px] border border-white/5 bg-white/[0.04] p-6 backdrop-blur-xl md:grid-cols-3 md:p-10">
           {highlights.map(({ icon: Icon, title, description }) => (
@@ -262,7 +305,7 @@ const Hero = () => {
         className="absolute inset-x-0 bottom-0 z-0 h-40 bg-gradient-to-t from-[#06060C] via-[#06060C]/80 to-transparent"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.2 }}
+        transition={{ duration: 0.8 }}
       />
     </section>
   );

@@ -1,131 +1,171 @@
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { Mail, MessageSquare, Phone } from "lucide-react";
 import FuturisticSection from "../components/FuturisticSection";
 
+const contactHighlights = [
+  "Tailored discovery sessions to align on goals",
+  "End-to-end implementation with measurable milestones",
+  "Dedicated AI specialists for ongoing optimisation",
+];
+
+const contactMethods = [
+  {
+    icon: Mail,
+    label: "Email us",
+    detail: "hello@frostrek.ai",
+    href: "mailto:hello@frostrek.ai",
+  },
+  {
+    icon: Phone,
+    label: "Call the studio",
+    detail: "+1 (415) 555-0199",
+    href: "tel:+14155550199",
+  },
+  {
+    icon: MessageSquare,
+    label: "Book a call",
+    detail: "Choose a slot that suits you",
+    href: "#",
+  },
+];
+
 const Collaborate = () => {
-  const [showForm, setShowForm] = useState(false);
+  const [status, setStatus] = useState("idle");
 
-  const handleEnter = () => {
-    setShowForm(true);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted");
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setStatus("submitted");
   };
 
   return (
     <FuturisticSection
       id="collaborate"
       className="py-28"
-      containerClassName="relative mx-auto flex min-h-[80vh] w-full max-w-4xl flex-col items-center justify-center gap-12 px-6 md:px-12"
+      containerClassName="relative mx-auto w-full max-w-6xl px-6 md:px-12 xl:px-20"
+      fullWidth
     >
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div
-          className="absolute left-1/4 top-1/3 h-80 w-80 animate-pulse rounded-full blur-3xl"
-          style={{ background: "radial-gradient(circle, rgba(0, 255, 255, 0.18) 0%, transparent 70%)" }}
-        />
-        <div
-          className="absolute bottom-1/4 right-1/4 h-80 w-80 animate-pulse rounded-full blur-3xl"
-          style={{ background: "radial-gradient(circle, rgba(109, 40, 217, 0.16) 0%, transparent 70%)" }}
-        />
+        <div className="absolute -left-10 top-1/4 h-64 w-64 rounded-full bg-cyan-500/15 blur-3xl sm:h-80 sm:w-80" />
+        <div className="absolute right-0 bottom-0 h-56 w-56 rounded-full bg-indigo-500/15 blur-[120px] sm:h-72 sm:w-72" />
       </div>
 
-      <div className="relative z-10 flex w-full max-w-3xl flex-col items-center">
-        {/* Initial State - Large Heading with Enter Button */}
-        <div
-          className={`transition-all duration-700 ease-in-out ${
-            showForm
-              ? "opacity-0 scale-95 -translate-y-8 pointer-events-none absolute"
-              : "opacity-100 scale-100 translate-y-0"
-          }`}
-        >
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-center bg-gradient-to-r from-[#00FFFF] via-[#6D28D9] to-[#14B8A6] bg-clip-text text-transparent mb-12 animate-fade-in drop-shadow-[0_0_30px_rgba(0,255,255,0.3)]">
-            Let's Collaborate
-          </h2>
-          
-          <button
-            onClick={handleEnter}
-            className="group relative px-12 py-4 bg-gradient-to-r from-[#00FFFF] via-[#6D28D9] to-[#14B8A6] rounded-full text-[#0B0B0E] font-semibold text-lg shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden"
-          >
-            <span className="flex items-center gap-3 relative z-10">
-              Get in Touch
-              <ChevronDown 
-                size={24} 
-                className="transform group-hover:translate-y-1 transition-transform duration-300" 
-              />
-            </span>
-            <span className="absolute inset-0 bg-gradient-to-r from-[#14B8A6] via-[#00FFFF] to-[#6D28D9] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-          </button>
-        </div>
-
-        {/* Form State - Smaller Heading with Form */}
-        <div
-          className={`w-full transition-all duration-700 ease-in-out ${
-            showForm
-              ? "opacity-100 scale-100 translate-y-0"
-              : "opacity-0 scale-95 translate-y-8 pointer-events-none"
-          }`}
-        >
-          {/* Small Heading */}
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-center bg-gradient-to-r from-[#00FFFF] via-[#6D28D9] to-[#14B8A6] bg-clip-text text-transparent">
-            Let's Collaborate
-          </h2>
-          
-          {/* Subtext */}
-          <p className="text-[#D1D5DB] text-base md:text-lg text-center max-w-2xl mx-auto mb-10">
-            Have a project in mind or want to explore how Frostrek can empower your
-            business with AI? Let's connect and build the future together.
-          </p>
-
-          {/* Contact Form */}
-          <div className="bg-[#0D0D10] w-full max-w-lg mx-auto p-8 rounded-2xl border border-cyan-500/20 shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 backdrop-blur-sm">
-            <div className="flex flex-col gap-5">
-              <div className="transform transition-all duration-500 hover:translate-x-1">
-                <label className="block text-sm text-[#D1D5DB] mb-2">Full Name</label>
-                <input
-                  type="text"
-                  placeholder="Enter your name"
-                  className="w-full px-4 py-3 bg-[#0B0B0E] border border-cyan-500/20 rounded-xl text-[#FFFFFF] focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/30 transition-all duration-300"
-                />
-              </div>
-              
-              <div className="transform transition-all duration-500 hover:translate-x-1">
-                <label className="block text-sm text-[#D1D5DB] mb-2">Email Address</label>
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="w-full px-4 py-3 bg-[#0B0B0E] border border-cyan-500/20 rounded-xl text-[#FFFFFF] focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/30 transition-all duration-300"
-                />
-              </div>
-              
-              <div className="transform transition-all duration-500 hover:translate-x-1">
-                <label className="block text-sm text-[#D1D5DB] mb-2">Message</label>
-                <textarea
-                  rows="4"
-                  placeholder="Tell us about your project..."
-                  className="w-full px-4 py-3 bg-[#0B0B0E] border border-cyan-500/20 rounded-xl text-[#FFFFFF] focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-500/30 transition-all duration-300 resize-none"
-                ></textarea>
-              </div>
-              
-              <button
-                onClick={handleSubmit}
-                className="mt-4 w-full py-3 bg-gradient-to-r from-[#00FFFF] via-[#6D28D9] to-[#14B8A6] rounded-xl text-[#0B0B0E] font-semibold shadow-md hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 active:scale-95"
-              >
-                Send Message
-              </button>
-            </div>
+      <div className="relative z-10 grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        <div className="flex flex-col gap-8">
+          <div className="space-y-4">
+            <p className="text-xs uppercase tracking-[0.4em] text-cyan-200/70">Let’s collaborate</p>
+            <h2 className="text-3xl font-semibold text-slate-50 sm:text-4xl lg:text-5xl">
+              Build the next generation of intelligence with Frostrek
+            </h2>
+            <p className="text-base text-slate-300/85">
+              Share your challenges and we’ll co-design a roadmap that balances technical depth with
+              measurable impact. Our team blends strategy, engineering, and enablement so you stay in control
+              at every step.
+            </p>
           </div>
 
-          {/* Back Button */}
-          <button
-            onClick={() => setShowForm(false)}
-            className="mt-6 mx-auto block text-[#9CA3AF] hover:text-cyan-400 transition-colors duration-300 text-sm"
-          >
-            ← Back
-          </button>
+          <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-[0_20px_50px_rgba(8,15,40,0.35)] backdrop-blur">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200/80">
+              What to expect
+            </h3>
+            <ul className="mt-5 space-y-3 text-sm text-slate-300/85">
+              {contactHighlights.map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <span className="mt-1 inline-flex h-2 w-2 flex-none rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.6)]" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {contactMethods.map(({ icon: Icon, label, detail, href }) => (
+              <a
+                key={label}
+                href={href}
+                className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-[#0D0D10]/80 p-4 transition hover:border-cyan-400/40 hover:bg-cyan-500/5"
+              >
+                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-300">
+                  <Icon size={20} />
+                </span>
+                <span className="flex flex-col">
+                  <span className="text-xs uppercase tracking-[0.2em] text-slate-400">{label}</span>
+                  <span className="text-sm font-medium text-slate-100 group-hover:text-cyan-200">{detail}</span>
+                </span>
+              </a>
+            ))}
+          </div>
         </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-6 rounded-3xl border border-white/10 bg-[#0B0B0E]/70 p-8 shadow-[0_24px_60px_rgba(6,16,40,0.45)] backdrop-blur"
+        >
+          <div>
+            <h3 className="text-lg font-semibold text-slate-50">Tell us about your project</h3>
+            <p className="mt-2 text-sm text-slate-400">
+              We’ll respond within one business day with next steps and a suggested time to connect.
+            </p>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2">
+            <label className="flex flex-col gap-2 text-sm text-slate-300/80">
+              Full name
+              <input
+                type="text"
+                name="name"
+                required
+                autoComplete="name"
+                className="rounded-xl border border-white/10 bg-[#08080c]/80 px-4 py-3 text-base text-slate-100 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
+                placeholder="Alex Rivera"
+              />
+            </label>
+            <label className="flex flex-col gap-2 text-sm text-slate-300/80">
+              Work email
+              <input
+                type="email"
+                name="email"
+                required
+                autoComplete="email"
+                className="rounded-xl border border-white/10 bg-[#08080c]/80 px-4 py-3 text-base text-slate-100 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
+                placeholder="you@company.com"
+              />
+            </label>
+          </div>
+
+          <label className="flex flex-col gap-2 text-sm text-slate-300/80">
+            Company / organisation
+            <input
+              type="text"
+              name="company"
+              className="rounded-xl border border-white/10 bg-[#08080c]/80 px-4 py-3 text-base text-slate-100 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
+              placeholder="Frostrek Labs"
+            />
+          </label>
+
+          <label className="flex flex-col gap-2 text-sm text-slate-300/80">
+            How can we help?
+            <textarea
+              name="message"
+              rows={5}
+              required
+              className="rounded-2xl border border-white/10 bg-[#08080c]/80 px-4 py-3 text-base text-slate-100 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
+              placeholder="Share a bit about your initiative, timeline, or KPIs."
+            />
+          </label>
+
+          <button
+            type="submit"
+            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-500 px-6 py-3 text-sm font-semibold text-slate-900 shadow-[0_15px_35px_rgba(23,162,184,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_45px_rgba(23,162,184,0.4)]"
+          >
+            {status === "submitted" ? "Message sent" : "Send message"}
+          </button>
+
+          {status === "submitted" && (
+            <p className="text-sm font-medium text-emerald-300">
+              Thanks for reaching out! Someone from our team will respond shortly.
+            </p>
+          )}
+        </form>
       </div>
     </FuturisticSection>
   );
