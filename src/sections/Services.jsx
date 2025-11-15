@@ -81,10 +81,6 @@ const Services = () => {
               <p className="mt-3 text-sm leading-relaxed text-slate-300/80">
                 {service.description}
               </p>
-              <div className="mt-8 flex items-center gap-2 text-sm font-medium text-cyan-300">
-                Learn more
-                <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
-              </div>
               {!performanceMode && (
                 <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity group-hover:opacity-100">
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-transparent" />

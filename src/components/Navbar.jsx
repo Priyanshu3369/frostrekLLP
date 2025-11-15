@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Sparkles, X } from "lucide-react";
 import usePerformanceMode from "../hooks/usePerformanceMode";
+import GetInTouch from "../pages/GetInTouch";
 
 const links = [
   // { label: "Home", href: "#home", type: "hash" },
@@ -42,11 +43,10 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all ${
-        scrolled
+      className={`fixed inset-x-0 top-0 z-50 transition-all ${scrolled
           ? "border-b border-white/10 bg-[#0B0B0E]/95 backdrop-blur"
           : "bg-[#0B0B0E]/75"
-      } ${performanceMode ? "shadow-sm" : "shadow-[0_10px_30px_rgba(0,0,0,0.25)]"}`}
+        } ${performanceMode ? "shadow-sm" : "shadow-[0_10px_30px_rgba(0,0,0,0.25)]"}`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:px-8">
         <Link
@@ -60,27 +60,36 @@ const Navbar = () => {
           <span className="text-base md:text-lg">Frostrek</span>
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm font-medium text-slate-200 md:flex">
-          {links.map((link) =>
-            link.type === "route" ? (
-              <Link
-                key={link.href}
-                to={link.href}
-                className="rounded-full px-3 py-1 transition-colors hover:bg-cyan-500/10 hover:text-cyan-200"
-              >
-                {link.label}
-              </Link>
-            ) : (
-              <a
-                key={link.href}
-                href={link.href}
-                className="rounded-full px-3 py-1 transition-colors hover:bg-cyan-500/10 hover:text-cyan-200"
-              >
-                {link.label}
-              </a>
-            )
-          )}
-        </nav>
+        <div className="flex items-center gap-6">
+          <nav className="hidden items-center gap-6 text-sm font-medium text-slate-200 md:flex">
+            {links.map((link) =>
+              link.type === "route" ? (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="rounded-full px-3 py-1 transition-colors hover:bg-cyan-500/10 hover:text-cyan-200"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-full px-3 py-1 transition-colors hover:bg-cyan-500/10 hover:text-cyan-200"
+                >
+                  {link.label}
+                </a>
+              )
+            )}
+          </nav>
+          <Link
+            to="/get-in-touch"
+            className="group relative hidden overflow-hidden rounded-full bg-gradient-to-r from-teal-700 to-teal-600 px-5 py-2.5 font-semibold text-white shadow-lg shadow-teal-900/30 transition-all hover:shadow-xl hover:shadow-teal-800/50 hover:scale-105 md:block"
+          >
+            <span className="relative z-10">Get in Touch</span>
+            <span className="absolute inset-0 -z-0 bg-gradient-to-r from-teal-600 to-teal-500 opacity-0 transition-opacity group-hover:opacity-100"></span>
+          </Link>
+        </div>
 
         <button
           type="button"

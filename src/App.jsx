@@ -19,6 +19,7 @@ import Footer from "./components/Footer";
 import AboutPage from "./pages/About";
 import FAQPage from "./pages/FAQs";
 import ServicePage from "./pages/Services";
+import GetInTouch from "./pages/GetInTouch";
 
 // ---------- HOME PAGE ----------
 const Home = () => {
@@ -48,6 +49,7 @@ const App = () => {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/services" element={<ServicePage />} />
         <Route path="/faqs" element={<FAQPage />} />
+        <Route path="/get-in-touch" element={<GetInTouch />} />
 
         <Route path="*" element={<Home />} />
       </Routes>

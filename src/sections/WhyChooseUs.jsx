@@ -191,33 +191,6 @@ const WhyChooseUs = () => {
                       <p className="text-[#D1D5DB] text-sm leading-relaxed mb-4">
                         {item.desc}
                       </p>
-
-                      {/* Bottom action bar */}
-                      <div className="mt-4 pt-4 border-t border-cyan-500/20 flex items-center justify-between">
-                        <div className="flex gap-1">
-                          {[1, 2, 3, 4].map((dot) => (
-                            <div
-                              key={dot}
-                              className={`w-1 h-1 rounded-full transition-all duration-300 ${
-                                isActive && dot <= 3
-                                  ? 'bg-cyan-400 shadow-[0_0_8px_rgba(0,255,255,0.6)]' 
-                                  : 'bg-cyan-500/20'
-                              }`}
-                              style={{ animationDelay: `${dot * 0.1}s` }}
-                            />
-                          ))}
-                        </div>
-                        <button 
-                          onClick={() => setActiveIndex(index)}
-                          className={`text-xs font-mono transition-colors duration-300 ${
-                            isActive || isHovered
-                              ? 'text-cyan-400 hover:text-cyan-300' 
-                              : 'text-cyan-500/50 hover:text-cyan-400'
-                          }`}
-                        >
-                          VIEW DETAILS →
-                        </button>
-                      </div>
                     </div>
 
                     {/* Corner decorations */}

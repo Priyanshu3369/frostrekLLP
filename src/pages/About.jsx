@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowRight, Zap, Users, Target, Eye, CheckCircle, Sparkles, Activity } from 'lucide-react';
+import { Link } from "react-router-dom";
 
 // Floating particles background
 const FloatingParticles = () => {
@@ -45,7 +46,7 @@ const LiquidCard = ({ children, className = "" }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6 }}
-      whileHover={{ 
+      whileHover={{
         y: -12,
         boxShadow: "0 20px 40px rgba(0,0,0,0.3)"
       }}
@@ -83,7 +84,7 @@ const ParallaxLayer = ({ children, speed = 0.5 }) => {
     offset: ["start end", "end start"]
   });
   const y = useTransform(scrollYProgress, [0, 1], [100 * speed, -100 * speed]);
-  
+
   return (
     <motion.div ref={ref} style={{ y }}>
       {children}
@@ -138,9 +139,9 @@ const About = () => {
   return (
     <div className="bg-[#0B0B0E] text-[#F8FAFC] min-h-screen overflow-hidden" ref={containerRef}>
       <FloatingParticles />
-      
+
       {/* Progress Bar */}
-      <motion.div 
+      <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-500 z-50 origin-left"
         style={{ scaleX }}
       />
@@ -161,7 +162,7 @@ const About = () => {
 
       {/* Animated grid background */}
       <div className="fixed inset-0 opacity-[0.06] pointer-events-none">
-        <motion.div 
+        <motion.div
           className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(109,40,217,0.1)_1px,transparent_1px)] bg-[size:80px_80px]"
           animate={{ backgroundPosition: ['0px 0px', '80px 80px'] }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -171,10 +172,10 @@ const About = () => {
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(6,182,212,0.15),transparent_50%)]" />
-        
+
         <div className="max-w-7xl mx-auto relative z-10">
           <ParallaxLayer speed={0.3}>
-            <motion.div 
+            <motion.div
               className="text-center mb-12"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -192,7 +193,7 @@ const About = () => {
                 About
               </motion.div>
 
-              <motion.h1 
+              <motion.h1
                 className="text-4xl md:text-6xl font-semibold mb-6 leading-tight"
                 style={{ x: mousePos.x }}
               >
@@ -201,8 +202,8 @@ const About = () => {
                 </span>{" "}
                 of our successful business
               </motion.h1>
-              
-              <motion.p 
+
+              <motion.p
                 className="text-xl text-slate-300/80 font-light mb-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -211,7 +212,7 @@ const About = () => {
                 Revolutionizing AI Solutions with Expert Training and Talent Matching
               </motion.p>
 
-              <motion.p 
+              <motion.p
                 className="text-lg text-slate-400 leading-relaxed max-w-4xl mx-auto mb-10"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -219,8 +220,8 @@ const About = () => {
               >
                 We are a cutting-edge AI company specializing in training advanced AI models through Reinforcement Learning from Human Feedback (RLHF). Founded with a vision to redefine AI development, we empower organizations by transforming their AI models into smarter, more reliable systems.
               </motion.p>
-              
-              <motion.button 
+
+              <motion.button
                 className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-500 px-8 py-4 text-base font-semibold text-slate-900 shadow-lg relative overflow-hidden"
                 whileHover={{ scale: 1.05, y: -3, boxShadow: "0 20px 40px rgba(6,182,212,0.4)" }}
                 whileTap={{ scale: 0.98 }}
@@ -246,16 +247,16 @@ const About = () => {
 
       {/* Services Grid with Enhanced Effects */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 relative">
-        <motion.div 
+        <motion.div
           className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(109,40,217,0.08),transparent_70%)]"
           animate={{ scale: [1, 1.1, 1] }}
           transition={{ duration: 10, repeat: Infinity }}
         />
-        
+
         <div className="max-w-7xl mx-auto relative z-10">
           <RevealSection>
             <div className="text-center mb-16">
-              <motion.span 
+              <motion.span
                 className="text-xs uppercase tracking-widest text-cyan-400 font-semibold"
                 animate={{ letterSpacing: ['0.2em', '0.3em', '0.2em'] }}
                 transition={{ duration: 3, repeat: Infinity }}
@@ -267,19 +268,19 @@ const About = () => {
               </h2>
             </div>
           </RevealSection>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
               <RevealSection key={index} delay={index * 0.1}>
                 <LiquidCard className="p-6 bg-white/[0.04] backdrop-blur-xl rounded-2xl border border-white/5 h-full">
-                  <motion.div 
+                  <motion.div
                     className="flex h-12 w-12 items-center justify-center rounded-full bg-cyan-400/10 text-cyan-400 mb-5"
                     whileHover={{ rotate: 45, scale: 1.15 }}
                     transition={{ duration: 0.3 }}
                   >
                     <service.icon className="w-6 h-6" />
                   </motion.div>
-                  
+
                   <h3 className="text-lg font-semibold mb-3">{service.title}</h3>
                   <p className="text-sm text-slate-400 leading-relaxed">{service.desc}</p>
                 </LiquidCard>
@@ -302,7 +303,7 @@ const About = () => {
               ].map((offering, index) => (
                 <RevealSection key={index} delay={index * 0.1}>
                   <LiquidCard className="p-8 bg-white/[0.04] backdrop-blur-xl rounded-2xl border border-white/5">
-                    <motion.h3 
+                    <motion.h3
                       className="text-2xl font-semibold mb-4 flex items-center gap-3"
                       initial={{ x: 0 }}
                       whileHover={{ x: 5 }}
@@ -312,7 +313,6 @@ const About = () => {
                         whileHover={{ x: 5, scale: 1.2 }}
                         transition={{ type: "spring", stiffness: 400 }}
                       >
-                        <ArrowRight className="w-5 h-5 text-indigo-400" />
                       </motion.div>
                     </motion.h3>
                     <p className="text-slate-400 leading-relaxed">{offering.desc}</p>
@@ -327,7 +327,7 @@ const About = () => {
       {/* Mission Statement with Particles */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 relative">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(6,182,212,0.12),transparent_70%)]" />
-        
+
         {/* Orbiting particles */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -337,7 +337,7 @@ const About = () => {
               style={{ left: '50%', top: '50%' }}
               animate={{ rotate: 360 }}
               transition={{ duration: 8 + i * 2, repeat: Infinity, ease: "linear" }}
-              transformTemplate={({ rotate }) => 
+              transformTemplate={({ rotate }) =>
                 `translateX(${Math.cos(i * 60 * Math.PI / 180) * 100}px) 
                  translateY(${Math.sin(i * 60 * Math.PI / 180) * 100}px) 
                  rotate(${rotate})`
@@ -345,7 +345,7 @@ const About = () => {
             />
           ))}
         </div>
-        
+
         <div className="max-w-6xl mx-auto text-center relative z-10">
           <RevealSection>
             <h2 className="text-3xl md:text-5xl font-semibold mb-8">
@@ -371,13 +371,13 @@ const About = () => {
               </span>
             </h2>
           </RevealSection>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
             {features.map((feature, index) => (
               <RevealSection key={index} delay={index * 0.05}>
-                <motion.div 
+                <motion.div
                   className="flex items-start gap-4 p-6 bg-white/[0.04] backdrop-blur-xl rounded-2xl border border-white/5 relative overflow-hidden group"
-                  whileHover={{ 
+                  whileHover={{
                     x: 8,
                     borderColor: "rgba(6,182,212,0.3)",
                     boxShadow: "0 10px 30px rgba(6,182,212,0.15)"
@@ -391,8 +391,8 @@ const About = () => {
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1, duration: 1 }}
                   />
-                  
-                  <motion.div 
+
+                  <motion.div
                     className="flex h-6 w-6 items-center justify-center rounded-full bg-cyan-400/10 flex-shrink-0 mt-1"
                     whileHover={{ rotate: 360, scale: 1.3 }}
                     transition={{ duration: 0.5 }}
@@ -436,7 +436,7 @@ const About = () => {
           animate={{ rotate: 360 }}
           transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
         />
-        
+
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <RevealSection>
             <h2 className="text-3xl md:text-5xl font-semibold mb-6">
@@ -445,21 +445,24 @@ const About = () => {
             <p className="text-lg text-slate-400 mb-10">
               Whether you're looking to enhance your AI models or explore new opportunities, we're here to help.
             </p>
-            <motion.button 
-              className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-500 px-10 py-4 text-base font-semibold text-slate-900 shadow-lg relative"
-              whileHover={{ scale: 1.1, y: -5, boxShadow: "0 25px 50px rgba(6,182,212,0.5)" }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <motion.span
-                className="absolute inset-0 rounded-full border-2 border-white/30"
-                animate={{ scale: [1, 1.5], opacity: [1, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              />
-              Get in touch
-              <motion.div animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-                <ArrowRight className="w-5 h-5" />
-              </motion.div>
-            </motion.button>
+            <Link to="/get-in-touch">
+              <motion.button
+                className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-500 px-10 py-4 text-base font-semibold text-slate-900 shadow-lg relative"
+                whileHover={{ scale: 1.1, y: -5, boxShadow: "0 25px 50px rgba(6,182,212,0.5)" }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <motion.span
+                  className="absolute inset-0 rounded-full border-2 border-white/30"
+                  animate={{ scale: [1, 1.5], opacity: [1, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                />
+                Get in touch
+                <motion.div animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                  <ArrowRight className="w-5 h-5" />
+                </motion.div>
+              </motion.button>
+            </Link>
+
 
             <motion.div className="mt-12 flex justify-center gap-8" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
               <motion.div className="flex items-center gap-2" whileHover={{ scale: 1.1 }}>
