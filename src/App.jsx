@@ -31,7 +31,6 @@ const Home = () => {
       <Testimonials />
       <FAQs />
       <Collaborate />
-      <Footer />
     </div>
   );
 };
@@ -51,6 +50,7 @@ const App = () => {
 
         <Route path="*" element={<Home />} />
       </Routes>
+      <Footer/>
     </div>
   );
 };
