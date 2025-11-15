@@ -54,7 +54,7 @@ const FuturisticSection = ({
     <section
       ref={innerRef}
       id={id}
-      className={`relative overflow-hidden bg-[#06060C] py-24 text-[#F8FAFC] ${className}`}
+      className={`relative overflow-hidden pt-4 pb-20 text-[#F8FAFC] ${className}`}
     >
       <div className="absolute inset-0">
         <div

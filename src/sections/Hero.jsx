@@ -107,7 +107,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen w-full overflow-hidden bg-[#06060C] pt-24 pb-32"
+      className="relative min-h-screen w-full overflow-hidden bg-[#0B0B0E] pt-24 pb-32"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(0,255,255,0.16),transparent_55%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(109,40,217,0.12),transparent_60%)]" />
@@ -255,7 +255,7 @@ const Hero = () => {
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.9 + beacon.delay, duration: 0.6 }}
-                    className={`absolute ${beacon.position} w-48 rounded-2xl border border-cyan-400/20 bg-[#06060C]/80 p-4 text-xs text-slate-200 shadow-[0_18px_32px_rgba(8,47,73,0.35)] backdrop-blur-lg`}
+                    className={`absolute ${beacon.position} w-48 rounded-2xl border border-cyan-400/20 bg-[#0B0B0E]/80 p-4 text-xs text-slate-200 shadow-[0_18px_32px_rgba(8,47,73,0.35)] backdrop-blur-lg`}
                   >
                     <div className="text-sm font-semibold text-cyan-200">
                       {beacon.title}

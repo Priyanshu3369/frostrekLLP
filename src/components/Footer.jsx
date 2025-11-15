@@ -2,7 +2,7 @@ import { Facebook, Twitter, Linkedin, Mail } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="relative overflow-hidden bg-[#06060C] py-16 px-6 text-[#D1D5DB] md:px-16">
+    <footer className="relative overflow-hidden bg-[#0B0B0E] py-16 px-6 text-[#D1D5DB] md:px-16">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 opacity-[0.08]" style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)` ,

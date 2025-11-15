@@ -234,27 +234,6 @@ const WhyChooseUs = () => {
           })}
         </div>
       </div>
-
-      {/* Navigation controls */}
-      <div className="relative z-10 mt-12 flex items-center gap-6">
-        <div className="flex gap-2">
-          {reasons.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setActiveIndex(index)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                activeIndex === index
-                  ? 'w-12 bg-gradient-to-r from-cyan-400 to-purple-600 shadow-[0_0_10px_rgba(0,255,255,0.6)]' 
-                  : 'w-6 bg-cyan-500/30 hover:bg-cyan-500/50'
-              }`}
-            />
-          ))}
-        </div>
-        
-        <div className="text-xs font-mono text-cyan-500/60">
-          {activeIndex + 1} / {reasons.length}
-        </div>
-      </div>
     </FuturisticSection>
   );
 };
