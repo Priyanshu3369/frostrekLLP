@@ -2,6 +2,7 @@
 import { Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+import ScrollToTop from "./components/ScrollToTop";
 
 /* Home sections */
 import Hero from "./sections/Hero";
@@ -40,7 +41,7 @@ const App = () => {
   return (
     <div className="bg-[#0B0B0E] min-h-screen">
       <Navbar />
-
+      <ScrollToTop/>
       <Routes>
         <Route path="/" element={<Home />} />
 
